@@ -1,9 +1,11 @@
 import java.util.Stack;
 
+// java CalculatorExample.java "1 + 2 * 3 - 4 / 5"
+
 public class CalculatorExample {
 
     public static void main(String[] args) {
-        double answer = calculate("1 + 2 * 3 - 4 / 5"); 
+        double answer = calculate(args[0]); 
         System.out.println("The answer is: " + answer);
     }
 

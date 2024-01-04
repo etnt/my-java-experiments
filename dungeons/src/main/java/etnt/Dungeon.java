@@ -32,7 +32,7 @@ public class Dungeon {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Enter a command (go, look, take, drop, inventory, health, fight, quit):");
+            System.out.println("Enter a command (go <direction>, look, take <item>, drop <item>, use <item>, inventory, health, fight <creature>, location, quit):");
             String command = scanner.nextLine();
 
             if (command.equalsIgnoreCase("quit")) {
@@ -110,6 +110,8 @@ public class Dungeon {
                 } else {
                     System.out.println("You don't have a " + itemName + ".");
                 }
+            } else if (command.equalsIgnoreCase("location")) {
+                System.out.println("You are currently in " + currentRoom.getName());
             } else {
                 System.out.println("I don't understand that command.");
             }

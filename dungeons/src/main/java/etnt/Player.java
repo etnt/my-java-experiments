@@ -38,4 +38,27 @@ public class Player {
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
     }
+
+    public void dealDamage(Creature creature, int damage) {
+        creature.setHealthPoints(creature.getHealthPoints() - damage);
+    }
+
+    public boolean hasItem(String itemName) {
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean useItem(String itemName) {
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                inventory.remove(item);
+                return true;
+            }
+        }
+        return false;
+    }
 }

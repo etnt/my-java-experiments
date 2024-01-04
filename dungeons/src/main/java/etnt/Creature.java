@@ -20,4 +20,8 @@ public class Creature {
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
     }
+
+    public void dealDamage(Player player, int damage) {
+        player.setHealthPoints(player.getHealthPoints() - damage);
+    }
 }

@@ -32,7 +32,7 @@ public class Dungeon {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Enter a command (go, look, take, drop, inventory, health, quit):");
+            System.out.println("Enter a command (go, look, take, drop, inventory, health, fight, quit):");
             String command = scanner.nextLine();
 
             if (command.equalsIgnoreCase("quit")) {
@@ -76,6 +76,40 @@ public class Dungeon {
             } else if (command.equalsIgnoreCase("look")) {
                 System.out.println(currentRoom.getDescription());
                 System.out.println("You see the following items: " + currentRoom.getItems().stream().map(Item::getName).collect(Collectors.joining(", ")));
+            } else if (command.startsWith("fight ")) {
+                String creatureName = command.substring(6);
+                Creature creature = currentRoom.getCreature();
+                if (creature != null && creature.getName().equalsIgnoreCase(creatureName)) {
+                    int damage = player.hasItem("sword") ? 100 : 50;  // player deals 100 damage with a sword, 50 without
+                    player.dealDamage(creature, damage);
+                    if (creature.getHealthPoints() <= 0) {
+                        System.out.println("You killed the " + creature.getName() + "!");
+                        currentRoom.setCreature(null);
+                    } else {
+                        creature.dealDamage(player, 20);  // creature deals 20 damage
+                        if (player.getHealthPoints() <= 0) {
+                            System.out.println("You were killed by the " + creature.getName() + "!");
+                            break;
+                        } else {
+                            System.out.println("You hit the " + creature.getName() + ". It has " + creature.getHealthPoints() + " health points left.");
+                            System.out.println("The " + creature.getName() + " hits you. You have " + player.getHealthPoints() + " health points left.");
+                        }
+                    }
+                } else {
+                    System.out.println("There is no " + creatureName + " here.");
+                }
+            } else if (command.startsWith("use ")) {
+                String itemName = command.substring(4);
+                if (player.useItem(itemName)) {
+                    if (itemName.equalsIgnoreCase("potion")) {
+                        player.setHealthPoints(100);  // restore player's health points to 100
+                        System.out.println("You use the " + itemName + ". Your health points are now " + player.getHealthPoints() + ".");
+                    } else {
+                        System.out.println("You can't use the " + itemName + ".");
+                    }
+                } else {
+                    System.out.println("You don't have a " + itemName + ".");
+                }
             } else {
                 System.out.println("I don't understand that command.");
             }

@@ -8,6 +8,7 @@ public class Room {
     private String description;
     private HashMap<String, Door> doors;
     private ArrayList<Item> items;
+    private Creature creature;
 
     public Room(String name, String description) {
         this.name = name;
@@ -53,5 +54,13 @@ public class Room {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setCreature(Creature creature) {
+        this.creature = creature;
+    }
+
+    public Creature getCreature() {
+        return creature;
     }
 }

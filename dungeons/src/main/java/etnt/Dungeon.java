@@ -11,9 +11,11 @@ public class Dungeon {
 
         Room room2 = new Room("Room 2", "You are in a dark room. There is a door to the west and a door to the east.");
         room2.addItem(new Item("potion"));
+        room2.setCreature(new Creature("Dragon", 200));
 
         Room room3 = new Room("Room 3", "You are in a dark room. There is a door to the west.");
         room3.addItem(new Item("coins"));
+        room3.setCreature(new Creature("Troll", 100));
 
         Door door1 = new Door(room1, room2);
         Door door2 = new Door(room2, room3);
@@ -42,6 +44,10 @@ public class Dungeon {
                     currentRoom = nextRoom;
                     System.out.println("You go " + direction + ". You are now in " + currentRoom.getName());
                     System.out.println(currentRoom.getDescription());
+                    Creature creature = currentRoom.getCreature();
+                    if (creature != null) {
+                        System.out.println("You see a " + creature.getName() + ".");
+                    }
                     System.out.println("You see the following items: " + currentRoom.getItems().stream().map(Item::getName).collect(Collectors.joining(", ")));
                 } else {
                     System.out.println("There is no door in that direction.");

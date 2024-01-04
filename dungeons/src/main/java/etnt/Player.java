@@ -17,6 +17,16 @@ public class Player {
         inventory.add(item);
     }
 
+    public boolean takeItem(Item item) {
+        for (Item i : inventory) {
+            if (i.getName().equalsIgnoreCase(item.getName())) {
+                return false;  // player already has the item
+            }
+        }
+        inventory.add(item);
+        return true;
+    }
+
     public boolean removeItem(String itemName) {
         for (Item item : inventory) {
             if (item.getName().equals(itemName)) {

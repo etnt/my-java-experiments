@@ -2,32 +2,25 @@ package etnt;
 
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.Random;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Dungeon {
     public static void main(String[] args) {
-        Room room1 = new Room("Room 1", "You are in a dark room. There is a door to the east.");
-        room1.addItem(new Item("key"));
-        room1.addItem(new Item("sword"));
+        int numberOfRooms = 5;  // change this to configure the number of rooms
+        Room[] rooms = generateRooms(numberOfRooms);
 
-        Room room2 = new Room("Room 2", "You are in a dark room. There is a door to the west and a door to the east.");
-        room2.addItem(new Item("potion"));
-        room2.setCreature(new Creature("Dragon", 200));
-
-        Room room3 = new Room("Room 3", "You are in a dark room. There is a door to the west.");
-        room3.addItem(new Item("coins"));
-        room3.setCreature(new Creature("Troll", 100));
-
-        Door door1 = new Door(room1, room2);
-        Door door2 = new Door(room2, room3);
-
-        room1.addDoor("east", door1);
-        room2.addDoor("west", door1);
-        room2.addDoor("east", door2);
-        room3.addDoor("west", door2);
+        // Connect the rooms with doors
+        for (int i = 0; i < numberOfRooms - 1; i++) {
+            Door door = new Door(rooms[i], rooms[i + 1]);
+            rooms[i].addDoor("east", door, "It looks sturdy.");
+            rooms[i + 1].addDoor("west", door, "It looks old and worn.");
+        }
 
         Player player = new Player(100);  // player starts with 100 health points
 
-        Room currentRoom = room1;
+        Room currentRoom = rooms[0];
         System.out.println("You are in " + currentRoom.getName());
 
         Scanner scanner = new Scanner(System.in);
@@ -44,6 +37,7 @@ public class Dungeon {
                     currentRoom = nextRoom;
                     System.out.println("You go " + direction + ". You are now in " + currentRoom.getName());
                     System.out.println(currentRoom.getDescription());
+                    System.out.println(currentRoom.getDoorDescriptions());
                     Creature creature = currentRoom.getCreature();
                     if (creature != null) {
                         System.out.println("You see a " + creature.getName() + ".");
@@ -56,8 +50,11 @@ public class Dungeon {
                 String itemName = command.substring(5);
                 Item item = currentRoom.removeItem(itemName);
                 if (item != null) {
-                    player.addItem(item);
-                    System.out.println("You take the " + itemName + ".");
+                    if (player.takeItem(item)) {
+                        System.out.println("You take the " + itemName + ".");
+                    } else {
+                        System.out.println("You already have a " + itemName + ".");
+                    }
                 } else {
                     System.out.println("There is no " + itemName + " here.");
                 }
@@ -75,18 +72,20 @@ public class Dungeon {
                 System.out.println("You have " + player.getHealthPoints() + " health points.");
             } else if (command.equalsIgnoreCase("look")) {
                 System.out.println(currentRoom.getDescription());
+                System.out.println(currentRoom.getDoorDescriptions());
                 System.out.println("You see the following items: " + currentRoom.getItems().stream().map(Item::getName).collect(Collectors.joining(", ")));
             } else if (command.startsWith("fight ")) {
                 String creatureName = command.substring(6);
                 Creature creature = currentRoom.getCreature();
                 if (creature != null && creature.getName().equalsIgnoreCase(creatureName)) {
-                    int damage = player.hasItem("sword") ? 100 : 50;  // player deals 100 damage with a sword, 50 without
+                    int damage = player.hasItem("Sword") ? 100 : 50;  // player deals 100 damage with a sword, 50 without
                     player.dealDamage(creature, damage);
                     if (creature.getHealthPoints() <= 0) {
                         System.out.println("You killed the " + creature.getName() + "!");
                         currentRoom.setCreature(null);
                     } else {
-                        creature.dealDamage(player, 20);  // creature deals 20 damage
+                        damage = player.hasItem("Shield") ? 10 : 20;  // creature deals 10 damage when player has got a shield, 20 without
+                        creature.dealDamage(player, damage);  // creature deals 20 damage
                         if (player.getHealthPoints() <= 0) {
                             System.out.println("You were killed by the " + creature.getName() + "!");
                             break;
@@ -117,5 +116,33 @@ public class Dungeon {
             }
         }
         scanner.close();
+    }
+
+    public static Room[] generateRooms(int numberOfRooms) {
+        Room[] rooms = new Room[numberOfRooms];
+        Random random = new Random();
+
+        Item[] items = {new Item("Sword"), new Item("Potion"), new Item("Shield"), new Item("Key")};
+
+        for (int i = 0; i < numberOfRooms; i++) {
+            rooms[i] = new Room("Room " + (i + 1), "You are in a dark room.");
+
+            // 50% chance to add a creature to the room
+            if (random.nextBoolean()) {
+                Creature creature = random.nextBoolean() ? new Creature("Dragon", 200) : new Creature("Troll", 100);
+                rooms[i].setCreature(creature);
+            }
+
+            // Add a random number of items to the room.
+            // Avoid adding duplicate items.
+            int numberOfItems = random.nextInt(items.length + 1);
+            Set<Item> uniqueItems = new HashSet<>();
+            while (uniqueItems.size() < numberOfItems) {
+                Item item = items[random.nextInt(items.length)];
+                uniqueItems.add(item);
+            }
+            rooms[i].addAllItems(uniqueItems);
+        }
+        return rooms;
     }
 }

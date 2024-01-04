@@ -22,7 +22,15 @@ public class CalculatorExample {
 
             if (c >= '0' && c <= '9') {
                 numbers.push((double) (c - '0'));
-            } else if (c == '+' || c == '-' || c == '*' || c == '/') {
+            } 
+            if (c == '(') {
+                operations.push(c);
+            } else if (c == ')') {
+                while (operations.peek() != '(') {
+                    processOperation(numbers, operations);
+                }
+                operations.pop();
+            else if (c == '+' || c == '-' || c == '*' || c == '/') {
                 while (!operations.isEmpty() && precedence(c, operations.peek())) {
                     processOperation(numbers, operations);
                 }

@@ -1,3 +1,5 @@
+package etnt;
+
 public class Dungeon {
     public static void main(String[] args) {
         Room room1 = new Room("Room 1");

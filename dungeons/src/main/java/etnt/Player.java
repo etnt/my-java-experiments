@@ -1,3 +1,5 @@
+package etnt;
+
 import java.util.ArrayList;
 
 public class Player {

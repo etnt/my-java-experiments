@@ -1,3 +1,5 @@
+package etnt;
+
 public class Door {
     private Room room1;
     private Room room2;

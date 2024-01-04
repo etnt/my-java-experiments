@@ -1,3 +1,5 @@
+package etnt;
+
 public class Item {
     private String name;
 

@@ -11,13 +11,6 @@ public class Dungeon {
         int numberOfRooms = 5;  // change this to configure the number of rooms
         Room[] rooms = generateRooms(numberOfRooms);
 
-        // Connect the rooms with doors
-        for (int i = 0; i < numberOfRooms - 1; i++) {
-            Door door = new Door(rooms[i], rooms[i + 1]);
-            rooms[i].addDoor("east", door, "It looks sturdy.");
-            rooms[i + 1].addDoor("west", door, "It looks old and worn.");
-        }
-
         Player player = new Player(100);  // player starts with 100 health points
 
         Room currentRoom = rooms[0];
@@ -124,6 +117,7 @@ public class Dungeon {
 
         Item[] items = {new Item("Sword"), new Item("Potion"), new Item("Shield"), new Item("Key")};
 
+        // First, create the rooms
         for (int i = 0; i < numberOfRooms; i++) {
             rooms[i] = new Room("Room " + (i + 1), "You are in a dark room.");
 
@@ -142,6 +136,26 @@ public class Dungeon {
                 uniqueItems.add(item);
             }
             rooms[i].addAllItems(uniqueItems);
+        }
+
+        // Then, create the doors
+        for (int i = 0; i < numberOfRooms; i++) {
+            int numberOfDoors = random.nextInt(4) + 1;
+            for (int j = 1; j <= numberOfDoors; j++) {
+                String direction = "";
+                String oppositeDirection = "";
+                switch (j) {
+                    case 0: direction = "north"; oppositeDirection = "south"; break;
+                    case 1: direction = "east"; oppositeDirection = "west"; break;
+                    case 2: direction = "south"; oppositeDirection = "north"; break;
+                    case 3: direction = "west"; oppositeDirection = "east"; break;
+                }
+                if (i + j < numberOfRooms && rooms[i].getDoor(direction) == null && rooms[i + j].getDoor(oppositeDirection) == null) {
+                    Door door = new Door(rooms[i], rooms[i + j]);
+                    rooms[i].addDoor(direction, door, "It looks sturdy.");
+                    rooms[i + j].addDoor(oppositeDirection, door, "It looks sturdy.");
+                }
+            }
         }
         return rooms;
     }

@@ -20,6 +20,10 @@ public class Room {
         this.description = description;
     }
 
+    public Door getDoor(String direction) {
+        return doors.get(direction);
+    }
+
     public void addDoor(String direction, Door door, String description) {
         doors.put(direction, door);
         doorDescriptions.put(direction, description);

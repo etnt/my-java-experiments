@@ -5,11 +5,13 @@ import java.util.ArrayList;
 
 public class Room {
     private String name;
+    private String description;
     private HashMap<String, Door> doors;
     private ArrayList<Item> items;
 
-    public Room(String name) {
+    public Room(String name, String description) {
         this.name = name;
+        this.description = description;
         this.doors = new HashMap<>();
         this.items = new ArrayList<>();
     }
@@ -47,5 +49,9 @@ public class Room {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

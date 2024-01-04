@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.Random;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 public class Dungeon {
     public static void main(String[] args) {
@@ -18,6 +19,7 @@ public class Dungeon {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("");
             System.out.println("Enter a command (go <direction>, look, take <item>, drop <item>, use <item>, inventory, health, fight <creature>, location, quit):");
             String command = scanner.nextLine();
 
@@ -35,7 +37,7 @@ public class Dungeon {
                     if (creature != null) {
                         System.out.println("You see a " + creature.getName() + ".");
                     }
-                    System.out.println("You see the following items: " + currentRoom.getItems().stream().map(Item::getName).collect(Collectors.joining(", ")));
+                    printRoomItems(currentRoom);
                 } else {
                     System.out.println("There is no door in that direction.");
                 }
@@ -66,7 +68,7 @@ public class Dungeon {
             } else if (command.equalsIgnoreCase("look")) {
                 System.out.println(currentRoom.getDescription());
                 System.out.println(currentRoom.getDoorDescriptions());
-                System.out.println("You see the following items: " + currentRoom.getItems().stream().map(Item::getName).collect(Collectors.joining(", ")));
+                printRoomItems(currentRoom);
             } else if (command.startsWith("fight ")) {
                 String creatureName = command.substring(6);
                 Creature creature = currentRoom.getCreature();
@@ -111,6 +113,15 @@ public class Dungeon {
         scanner.close();
     }
 
+    public static void printRoomItems(Room currentRoom) {
+        List<Item> roomItems = currentRoom.getItems();
+        if (roomItems.isEmpty()) {
+            System.out.println("There are no items in this room.");
+        } else {
+            System.out.println("You see the following items: " + roomItems.stream().map(Item::getName).collect(Collectors.joining(", ")));
+        }
+    }
+
     public static Room[] generateRooms(int numberOfRooms) {
         Room[] rooms = new Room[numberOfRooms];
         Random random = new Random();
@@ -139,6 +150,8 @@ public class Dungeon {
         }
 
         // Then, create the doors
+        String[] doorDescriptions = {"It looks sturdy.", "It's slightly ajar.", "It's made of solid oak.", "It's covered in moss.", "It's glowing faintly."};
+
         for (int i = 0; i < numberOfRooms; i++) {
             int numberOfDoors = random.nextInt(4) + 1;
             for (int j = 1; j <= numberOfDoors; j++) {
@@ -151,9 +164,10 @@ public class Dungeon {
                     case 3: direction = "west"; oppositeDirection = "east"; break;
                 }
                 if (i + j < numberOfRooms && rooms[i].getDoor(direction) == null && rooms[i + j].getDoor(oppositeDirection) == null) {
+                    String doorDescription = doorDescriptions[random.nextInt(doorDescriptions.length)];
                     Door door = new Door(rooms[i], rooms[i + j]);
-                    rooms[i].addDoor(direction, door, "It looks sturdy.");
-                    rooms[i + j].addDoor(oppositeDirection, door, "It looks sturdy.");
+                    rooms[i].addDoor(direction, door, doorDescription);
+                    rooms[i + j].addDoor(oppositeDirection, door, doorDescription);
                 }
             }
         }

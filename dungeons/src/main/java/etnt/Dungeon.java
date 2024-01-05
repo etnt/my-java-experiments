@@ -129,8 +129,10 @@ public class Dungeon {
         Item[] items = {new Item("Sword"), new Item("Potion"), new Item("Shield"), new Item("Key")};
 
         // First, create the rooms
+        String[] roomDescriptions = {"You are in a dark, gloomy room.", "You are in a brightly lit room.", "You are in a room filled with strange symbols.", "You are in a room with high, vaulted ceilings.", "You are in a room that smells of old books."};
         for (int i = 0; i < numberOfRooms; i++) {
-            rooms[i] = new Room("Room " + (i + 1), "You are in a dark room.");
+            String description = roomDescriptions[random.nextInt(roomDescriptions.length)];
+            rooms[i] = new Room("Room " + (i + 1), description);
 
             // 50% chance to add a creature to the room
             if (random.nextBoolean()) {

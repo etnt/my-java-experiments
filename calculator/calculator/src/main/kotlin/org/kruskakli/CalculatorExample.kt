@@ -11,6 +11,11 @@ fun main(args: Array<String>) {
 }
 
 fun calculate(expression: String): Double {
+
+    if (!isBalanced(expression)) {
+        throw IllegalArgumentException("Unbalanced parentheses in the expression.")
+    }
+
     val numbers = Stack<Double>()
     val operations = Stack<Char>()
 
@@ -92,4 +97,22 @@ fun hasPrecedence(op1: Char, op2: Char): Boolean {
     if (op1 == op2)
         return false
     return true
+}
+
+fun isBalanced(expression: String): Boolean {
+    val stack = Stack<Char>()
+
+    for (char in expression) {
+        when (char) {
+            '(' -> stack.push(char)
+            ')' -> {
+                if (stack.isEmpty()) {
+                    return false
+                }
+                stack.pop()
+            }
+        }
+    }
+
+    return stack.isEmpty()
 }

@@ -1,7 +1,9 @@
 package org.kruskakli
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import kotlin.test.assertFailsWith
 
 class CalculatorExampleTest {
 
@@ -19,5 +21,26 @@ class CalculatorExampleTest {
         assertEquals(1.0, calculate("1"), 0.1)
         assertEquals(3.0, calculate("1 + 2"), 0.1)
         assertEquals(6.2, calculate("1 + 2 * 3 - 4 / 5"), 0.1)
+    }
+
+    @Test
+    fun testCalculateWithInvalidCharacter() {
+        assertFailsWith<IllegalArgumentException> {
+            calculate("1 + 2 * 3 - 4 / 5 % 6")
+        }
+    }
+
+    @Test
+    fun testCalculateWithDivisionByZero() {
+        assertFailsWith<ArithmeticException> {
+            calculate("1 / 0")
+        }
+    }
+
+    @Test
+    fun testCalculateWithUnbalancedParentheses() {
+        assertFailsWith<IllegalArgumentException> {
+            calculate("(1 + 2 * 3 - 4 / 5")
+        }
     }
 }

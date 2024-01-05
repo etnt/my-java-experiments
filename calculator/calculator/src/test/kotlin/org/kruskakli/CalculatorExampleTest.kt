@@ -6,6 +6,14 @@ import org.junit.jupiter.api.Test
 class CalculatorExampleTest {
 
     @Test
+    fun testCalculateWithParentheses() {
+        assertEquals(7.0, calculate("(1 + 2) * 3 - 4 / 2"), 0.1)
+        assertEquals(7.0, calculate("((1 + 2) * 3) - 4 / 2"), 0.1)
+        assertEquals(5.0, calculate("1 + (2 * 3) - 4 / 2"), 0.1)
+        assertEquals(0.0, calculate("1 + (2 * (3 - 4)) / 2"), 0.1)
+    }
+
+    @Test
     fun testCalculate() {
         assertEquals(135.3072, calculate("100 + 12.2 * 3.14 - 40 / 13.33"), 0.0001)
         assertEquals(1.0, calculate("1"), 0.1)

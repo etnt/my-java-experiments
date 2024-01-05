@@ -5,9 +5,23 @@ import java.util.Stack
 // kotlin CalculatorExample.kt "1 + 2 * 3 - 4 / 5"
 
 fun main(args: Array<String>) {
-    val input = "100 + 12.2 * 3.14 - 40 / 13.33"
-    val answer = calculate(input)
-    println("The answer is: $answer")
+    var input: String? = ""
+
+    while (true) {
+        print("Enter an arithmetic expression (or press Enter to quit): ")
+        input = readLine()
+
+        if (input.isNullOrEmpty()) {
+            break
+        }
+
+        try {
+            val answer = calculate(input)
+            println("The answer is: $answer")
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+        }
+    }
 }
 
 fun calculate(expression: String): Double {

@@ -53,6 +53,10 @@ Enter an arithmetic expression (or press Enter to quit): 4 * ( 1 + 2 ) - 1 * 3
 The answer is: 9.0
 Enter an arithmetic expression (or press Enter to quit): 4*(1+2)-1*3
 The answer is: 9.0
+Enter an arithmetic expression (or press Enter to quit): 34 + (4 - 2
+Error: Unbalanced parentheses in the expression.
+Enter an arithmetic expression (or press Enter to quit): 34 + eee
+Error: Invalid character in expression: 'e'
 ```
 
 

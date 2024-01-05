@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Dungeon {
     public static void main(String[] args) {
-        int numberOfRooms = 5;  // change this to configure the number of rooms
+        int numberOfRooms = 9;  // change this to configure the number of rooms
         Room[] rooms = generateRooms(numberOfRooms);
 
         Player player = new Player(100);  // player starts with 100 health points
@@ -33,10 +33,7 @@ public class Dungeon {
                     System.out.println("You go " + direction + ". You are now in " + currentRoom.getName());
                     System.out.println(currentRoom.getDescription());
                     System.out.println(currentRoom.getDoorDescriptions());
-                    Creature creature = currentRoom.getCreature();
-                    if (creature != null) {
-                        System.out.println("You see a " + creature.getName() + ".");
-                    }
+                    printRoomCreature(currentRoom);
                     printRoomItems(currentRoom);
                 } else {
                     System.out.println("There is no door in that direction.");
@@ -68,6 +65,7 @@ public class Dungeon {
             } else if (command.equalsIgnoreCase("look")) {
                 System.out.println(currentRoom.getDescription());
                 System.out.println(currentRoom.getDoorDescriptions());
+                printRoomCreature(currentRoom);
                 printRoomItems(currentRoom);
             } else if (command.startsWith("fight ")) {
                 String creatureName = command.substring(6);
@@ -119,6 +117,14 @@ public class Dungeon {
             System.out.println("There are no items in this room.");
         } else {
             System.out.println("You see the following items: " + roomItems.stream().map(Item::getName).collect(Collectors.joining(", ")));
+        }
+    }
+
+    public static void printRoomCreature(Room currentRoom) {
+        Creature creature = currentRoom.getCreature();
+        if (creature != null) {
+            System.out.println("You see a " + creature.getName() + ".");
+            creature.printCreature();
         }
     }
 

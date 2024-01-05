@@ -78,3 +78,56 @@ Enter a command (go <direction>, look, take <item>, drop <item>, use <item>, inv
 health
 You have 100 health points.
 ```
+
+## With some ASCII art
+
+```shell
+You are in Room 1
+
+Enter a command (go <direction>, look, take <item>, drop <item>, use <item>, inventory, health, fight <creature>, location, quit):
+look
+You are in a room that smells of old books.
+There is a door to the . It's covered in moss. There is a door to the east. It looks sturdy. There is a door to the south. It's covered in moss. There is a door to the west. It's slightly ajar.
+You see a Troll.
+        .-''''.
+       /       \
+   __ /   .-.  .\
+  /  `\  /   \/  \
+  |  _ \/   .==.==.
+  | (   \  /____\__\
+   \ \      (_()(_())
+    \ \            '---._
+     \                   \_
+  /\ |`       (__)________/
+ /  \|     /\___/
+|    \     \||VV
+|     \     \|''',
+|      \     ______)
+\       \  /`
+ \       \(
+You see the following items: Potion, Shield, Key
+
+Enter a command (go <direction>, look, take <item>, drop <item>, use <item>, inventory, health, fight <creature>, location, quit):
+go south
+You go south. You are now in Room 3
+You are in a brightly lit room.
+There is a door to the east. It looks sturdy. There is a door to the north. It's covered in moss. There is a door to the west. It's slightly ajar.
+You see a Dragon.
+        ___====-_  _-====___"
+        _--^^^#####//      \\#####^^^--_
+     _-^##########// (    ) \\##########^-_
+    -############//  |\^^/|  \\############-
+  _/############//   (@::@)   \\############\_
+ /#############((     \\//     ))#############\
+-###############\\    (oo)    //###############-
+-#################\\  / VV \  //#################-
+-###################\\/      \//###################-
+_#/|##########/\######(   /\   )######/\##########|\#_
+|/ |#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+`  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+`   `  `      `   / | |  | | \   '      '  '   '
+                 (  | |  | |  )
+                __\ | |  | | /__
+               (vvv(VVV)(VVV)vvv)
+You see the following items: Potion, Shield, Sword, Key
+```

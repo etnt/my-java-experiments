@@ -29,20 +29,25 @@ fun calculate(expression: String): Double {
                     numbers.push(numberBuffer.toString().toDouble())
                     numberBuffer.clear()
                 }
-                while (operations.peek() != '(') {
+                while (!operations.isEmpty() && operations.peek() != '(') {
                     processOperation(numbers, operations)
                 }
-                operations.pop()
+                if (!operations.isEmpty()) {
+                    operations.pop()
+                }
             }
-            c == '+' || c == '-' || c == '*' || c == '/' -> {
+            c == ' ' || c == '+' || c == '-' || c == '*' || c == '/' -> {
                 if (numberBuffer.isNotEmpty()) {
                     numbers.push(numberBuffer.toString().toDouble())
                     numberBuffer.clear()
                 }
-                while (!operations.isEmpty() && hasPrecedence(c, operations.peek())) {
-                    processOperation(numbers, operations)
+
+                if (c != ' ') {
+                    while (!operations.isEmpty() && hasPrecedence(c, operations.peek()) && numbers.size >= 2) {
+                        processOperation(numbers, operations)
+                    }
+                    operations.push(c)
                 }
-                operations.push(c)
             }
             else -> throw IllegalArgumentException("Invalid character in expression: '$c'")
         }
@@ -78,10 +83,13 @@ fun processOperation(numbers: Stack<Double>, operations: Stack<Char>) {
     numbers.push(result)
 }
 
+// Returns true if op2 has higher precedence then op1, otherwise returns false.
 fun hasPrecedence(op1: Char, op2: Char): Boolean {
     if (op2 == '(' || op2 == ')')
         return false
     if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-'))
+        return false
+    if (op1 == op2)
         return false
     return true
 }

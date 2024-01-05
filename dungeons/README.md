@@ -24,6 +24,20 @@ We are using Maven to build and run the game.
 > mvn exec:java
 ```
 
+## Example of the Prompts I wrote to the Co-Pilot chatbot
+
+1. I want to create a dungeons game where I can walk between rooms connected via doors how should the code look like for this in Java?
+2. Add a player that can pick up items located in the rooms.
+3. How should I setup Maven to handle this code?
+4. Create a loop prompting for user input in order to navigate among the rooms.
+5. Add a way of expressing what can be seen inside a room when entering it.
+6. Add functionality for putting items in a room; for example a key, a sword, some coins.
+7. I want to make use of a player object to store the inventory and other things like health points for example.
+8. Add a look command.
+9. How can I implement various creatures e.g Dragons and Trolls that each has its own health point and are located in a room?
+10. How can I implement combat mechanics between the player and creatures in the game?
+11. ..etc...
+
 ## Example run
 
 ```shell
